@@ -69,43 +69,47 @@
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        email: '',
-        age: null,
-        password: '',
-        confirmPassword: '',
-        country: 'usa',
-        hobbyInputs: [],
-        terms: false
+import axios from 'axios'
+export default {
+  data () {
+    return {
+      email: '',
+      age: null,
+      password: '',
+      confirmPassword: '',
+      country: 'usa',
+      hobbyInputs: [],
+      terms: false
+    }
+  },
+  methods: {
+    onAddHobby () {
+      const newHobby = {
+        id: Math.random() * Math.random() * 1000,
+        value: ''
       }
+      this.hobbyInputs.push(newHobby)
     },
-    methods: {
-      onAddHobby () {
-        const newHobby = {
-          id: Math.random() * Math.random() * 1000,
-          value: ''
-        }
-        this.hobbyInputs.push(newHobby)
-      },
-      onDeleteHobby (id) {
-        this.hobbyInputs = this.hobbyInputs.filter(hobby => hobby.id !== id)
-      },
-      onSubmit () {
-        const formData = {
-          email: this.email,
-          age: this.age,
-          password: this.password,
-          confirmPassword: this.confirmPassword,
-          country: this.country,
-          hobbies: this.hobbyInputs.map(hobby => hobby.value),
-          terms: this.terms
-        }
-        console.log(formData)
+    onDeleteHobby (id) {
+      this.hobbyInputs = this.hobbyInputs.filter(hobby => hobby.id !== id)
+    },
+    onSubmit () {
+      const formData = {
+        email: this.email,
+        age: this.age,
+        password: this.password,
+        confirmPassword: this.confirmPassword,
+        country: this.country,
+        hobbies: this.hobbyInputs.map(hobby => hobby.value),
+        terms: this.terms
       }
+      console.log(formData)
+      axios.post('https://profas-152206.firebaseio.com/users.json', formData)
+        .then(res => console.log(res))
+        .catch(error => console.log(error))
     }
   }
+}
 </script>
 
 <style scoped>
